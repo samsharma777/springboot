@@ -35,4 +35,4 @@ jobs:
 
         curl -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
           --upload-file "$FILE" \
-          "$NEXUS_URL/com/example/helloworld/1.0.0/$FILENAME"
+          "http://192.168.1.75:8081/repository/maven-public//com/example/helloworld/1.0.0/$FILENAME"
