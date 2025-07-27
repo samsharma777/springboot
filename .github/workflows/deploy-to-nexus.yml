@@ -1,9 +1,14 @@
 name: Build and Deploy to Nexus
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      # If you have any inputs, you can define them here. 
+      # For example:
+      # version:
+      #   description: 'Version to deploy'
+      #   required: true
+      #   default: '1.0.0'
 
 jobs:
   build-and-deploy:
@@ -28,11 +33,14 @@ jobs:
         NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         NEXUS_URL: ${{ secrets.NEXUS_URL }}
       run: |
+        # Get the JAR file to upload
         FILE=$(ls target/*.jar | head -n 1)
         FILENAME=$(basename $FILE)
 
+        # Display message about what is being uploaded
         echo "Uploading $FILENAME to Nexus..."
 
+        # Upload the JAR file to Nexus repository
         curl -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
           --upload-file "$FILE" \
-          "http://192.168.1.75:8081/repository/jenkins/com/example/helloworld/1.0.0/$FILENAME"
+          "$NEXUS_URL/repository/jenkins/com/example/helloworld/1.0.0/$FILENAME"
